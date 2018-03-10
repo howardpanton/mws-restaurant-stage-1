@@ -24,11 +24,13 @@
     "gulp-plumber": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-responsive": "^2.9.0",
+    "gulp-rimraf": "^0.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-sequence": "^1.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-webserver": "^0.9.1",
+    "rimraf": "^2.6.2",
     "sharps": "^3.0.3"
   }
 }

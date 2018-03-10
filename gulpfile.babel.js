@@ -16,6 +16,7 @@ import browserSync from 'browser-sync';
 import responsive from 'gulp-responsive';
 import del from 'del';
 import sequence from 'gulp-sequence';
+import clean from 'gulp-rimraf';
 
 
 const dirs = {
@@ -48,13 +49,16 @@ const htmlPaths = {
   dest: `${dirs.dest}/`
 };
 
+const serviceworkerPaths = {
+  src: `${dirs.dest}/js/service-worker.js`,
+  dest: `${dirs.dest}/`
+};
 
 gulp.task('browser-sync', () => {
   browserSync({
     server: {
        baseDir: "./dist/"
     },
-    https: true,
     open: false,
     port: 8000
   });
@@ -83,6 +87,11 @@ gulp.task('clean', () => {
 
 gulp.task('images', () => {
   gulp.src(imgPaths.src)
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
     .pipe(cache(imagemin({
       optimizationLevel: 3,
       progressive: true,
@@ -138,19 +147,31 @@ gulp.task('scripts', () => {
 });
 
 
+gulp.task('serviceworker', () => {
+  return gulp.src(serviceworkerPaths.src)
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(clean({force: true}))
+    .pipe(gulp.dest(serviceworkerPaths.dest));
+});
+
 gulp.task('gulp-sequence',
   sequence(
     ['clean'],
-    ['html',
-    'data',
-    'scripts',
+    ['scripts',
     'styles',
     'images'],
+    ['data'],
+    ['html'],
+    ['serviceworker'],
     ['browser-sync']
   ));
 
 gulp.task('default', ['gulp-sequence'], () => {
   gulp.watch(sassPaths.src, ['styles']);
-  gulp.watch(jsPaths.src, ['scripts']);
+  gulp.watch(jsPaths.src, ['scripts', 'serviceworker']);
   gulp.watch(htmlPaths.src, ['html','bs-reload']);
 });
