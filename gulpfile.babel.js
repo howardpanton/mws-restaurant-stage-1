@@ -145,8 +145,8 @@ gulp.task('gulp-sequence',
     'data',
     'scripts',
     'styles',
-    'images',
-    'browser-sync']
+    'images'],
+    ['browser-sync']
   ));
 
 gulp.task('default', ['gulp-sequence'], () => {
