@@ -25,17 +25,17 @@ const dirs = {
 };
 
 const sassPaths = {
-  src: `${dirs.src}/sass/**/*.scss`,
+  src: `${dirs.src}/sass/*.scss`,
   dest: `${dirs.dest}/css/`
 };
 
 const dataPaths = {
-  src: `${dirs.src}/data/**/*.json`,
+  src: `${dirs.src}/data/*.json`,
   dest: `${dirs.dest}/data/`
 };
 
 const jsPaths = {
-  src: `${dirs.src}/js/**/*.js`,
+  src: `${dirs.src}/js/*.js`,
   dest: `${dirs.dest}/js/`
 };
 
@@ -54,6 +54,7 @@ const serviceworkerPaths = {
   dest: `${dirs.dest}/`
 };
 
+// Run browserSync server on port:8000
 gulp.task('browser-sync', () => {
   browserSync({
     server: {
@@ -64,29 +65,39 @@ gulp.task('browser-sync', () => {
   });
 });
 
+// Reload browser on changes
 gulp.task('bs-reload', () => {
   browserSync.reload();
 });
 
+// Copy HTML files to dist
 gulp.task('html', () => {
   return gulp.src(htmlPaths.src)
     .pipe(gulp.dest(htmlPaths.dest));
 });
 
+// Copy restaurants.json file to dist
 gulp.task('data', () => {
   return gulp.src(dataPaths.src)
     .pipe(gulp.dest(dataPaths.dest));
 });
 
-
+// Clean out the /dist folder before build
 gulp.task('clean', () => {
-  del(['dist/**']).then(paths => {
-    console.log('Deleted files and folders:\n', paths.join('\n'));
-  });
+  return del([
+    'dist/data',
+    'dist/img',
+    'dist/js',
+    'dist/css',
+    'dist/index.html',
+    'dist/restaurant.html',
+    'dist/service-worker.js'
+  ]);
 });
 
+// Copy images and optimize
 gulp.task('images', () => {
-  gulp.src(imgPaths.src)
+  return gulp.src(imgPaths.src)
     .pipe(plumber({
       errorHandler: function (error) {
         console.log(error.message);
@@ -114,9 +125,9 @@ gulp.task('responsive', () => {
     .pipe(gulp.dest('dist'));
 });
 
-
+// Minifiy and optimize CSS for build
 gulp.task('styles', () => {
-  gulp.src(sassPaths.src)
+  return gulp.src(sassPaths.src)
   .pipe(sourcemaps.init())
     .pipe(plumber({
       errorHandler: function (error) {
@@ -131,6 +142,7 @@ gulp.task('styles', () => {
     .pipe(browserSync.reload({stream:true}))
 });
 
+// Watch JS file for changes and build
 gulp.task('scripts', () => {
   return gulp.src(jsPaths.src)
   .pipe(sourcemaps.init())
@@ -140,13 +152,13 @@ gulp.task('scripts', () => {
         this.emit('end');
     }}))
     .pipe(babel())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(jsPaths.dest))
     .pipe(browserSync.reload({stream:true}))
 });
 
-
+// Move service worker file to root
 gulp.task('serviceworker', () => {
   return gulp.src(serviceworkerPaths.src)
     .pipe(plumber({
@@ -158,20 +170,42 @@ gulp.task('serviceworker', () => {
     .pipe(gulp.dest(serviceworkerPaths.dest));
 });
 
-gulp.task('gulp-sequence',
-  sequence(
-    ['clean'],
-    ['scripts',
-    'styles',
-    'images'],
-    ['data'],
-    ['html'],
-    ['serviceworker'],
-    ['browser-sync']
-  ));
+// Watch JS file changes
+function watchAppJs(done) {
+  return gulp.watch(jsPaths.src, gulp.series('scripts', 'serviceworker'))
+    .on('all', function(event, path, stats) {
+    console.log('File ' + path + ' was ' + event + ', running tasks...');
+  });
+}
 
-gulp.task('default', ['gulp-sequence'], () => {
-  gulp.watch(sassPaths.src, ['styles']);
-  gulp.watch(jsPaths.src, ['scripts', 'serviceworker']);
-  gulp.watch(htmlPaths.src, ['html','bs-reload']);
-});
+// Watch HTML file changes
+function watchAppHTML(done) {
+  return gulp.watch(htmlPaths.src, gulp.series('html','bs-reload'))
+    .on('all', function(event, path, stats) {
+    console.log('File ' + path + ' was ' + event + ', running tasks...');
+  });
+}
+
+// Watch CSS file changes
+function watchAppCSS(done) {
+  return gulp.watch(sassPaths.src, gulp.series('styles'))
+    .on('all', function(event, path, stats) {
+    console.log('File ' + path + ' was ' + event + ', running tasks...');
+  });
+}
+
+// Default watch task
+gulp.task('watch',
+  gulp.series(gulp.parallel(watchAppJs, watchAppCSS, watchAppHTML)));
+
+// Default task
+gulp.task('default', gulp.series(
+  'clean',
+  'styles',
+  'images',
+  'html',
+  'data',
+  'scripts',
+  'serviceworker',
+  gulp.parallel('browser-sync','watch')
+));
