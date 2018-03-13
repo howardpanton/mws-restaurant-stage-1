@@ -193,3 +193,12 @@ const registerSW = () => {
     console.log('Service worker not supported.');
   }
 }
+
+
+// ToDo: Add lazyload function for Images
+// We need to check whther on mobile and the cirrent media query
+// Maybe add media query to body as class
+// on window.load() check the media query
+// if mobile load ht efirst image
+// If table load first two image
+// ther listen to scroll event to load the next images
