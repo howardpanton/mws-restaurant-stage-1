@@ -17,6 +17,10 @@ import responsive from 'gulp-responsive';
 import del from 'del';
 import sequence from 'gulp-sequence';
 import clean from 'gulp-rimraf';
+import gutil from 'gulp-util';
+import critical from 'critical';
+
+const  criticalStream = critical.stream;
 
 
 const dirs = {
@@ -113,16 +117,70 @@ gulp.task('images', () => {
 
 // ToDo: Add responsive image sizes
 gulp.task('responsive', () => {
-  return gulp.src('src/*.jpg')
+  return gulp.src('src/img/*.jpg')
     .pipe(responsive({
       '1.jpg': [{
-          width: 200 * 2,
-          quality: 50,
-          rename: '1@2x.png'
-        }
-      ]
+          width: '80%',
+          quality: 70,
+          rename: '1.webp',
+          format: 'webp'
+        }],
+        '2.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '2.webp',
+          format: 'webp'
+        }],
+        '3.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '3.webp',
+          format: 'webp'
+        }],
+        '4.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '4.webp',
+          format: 'webp'
+        }],
+        '5.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '5.webp',
+          format: 'webp'
+        }],
+        '6.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '6.webp',
+          format: 'webp'
+        }],
+        '7.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '7.webp',
+          format: 'webp'
+        }],
+        '8.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '8.webp',
+          format: 'webp'
+        }],
+        '9.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '9.webp',
+          format: 'webp'
+        }],
+        '10.jpg': [{
+          width: '80%',
+          quality: 70,
+          rename: '10.webp',
+          format: 'webp'
+        }],
     }))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/img'));
 });
 
 // Minifiy and optimize CSS for build
@@ -170,6 +228,25 @@ gulp.task('serviceworker', () => {
     .pipe(gulp.dest(serviceworkerPaths.dest));
 });
 
+
+// Generate & Inline Critical-path CSS
+gulp.task('critical', () => {
+  return gulp.src('dist/*.html')
+      .pipe(plumber({
+        errorHandler: function (error) {
+          console.log(error.message);
+          this.emit('end');
+      }}))
+      .pipe(criticalStream({
+        base: 'dist/',
+        inline: true,
+        css: ['dist/css/styles.css'],
+        timeout: 60000,
+      }))
+      .pipe(gulp.dest('dist'));
+});
+
+
 // Watch JS file changes
 function watchAppJs(done) {
   return gulp.watch(jsPaths.src, gulp.series('scripts', 'serviceworker'))
@@ -180,7 +257,7 @@ function watchAppJs(done) {
 
 // Watch HTML file changes
 function watchAppHTML(done) {
-  return gulp.watch(htmlPaths.src, gulp.series('html','bs-reload'))
+  return gulp.watch(htmlPaths.src, gulp.series('html','critical','bs-reload'))
     .on('all', function(event, path, stats) {
     console.log('File ' + path + ' was ' + event + ', running tasks...');
   });
@@ -188,7 +265,7 @@ function watchAppHTML(done) {
 
 // Watch CSS file changes
 function watchAppCSS(done) {
-  return gulp.watch(sassPaths.src, gulp.series('styles'))
+  return gulp.watch(sassPaths.src, gulp.series('styles', 'critical'))
     .on('all', function(event, path, stats) {
     console.log('File ' + path + ' was ' + event + ', running tasks...');
   });
@@ -202,10 +279,11 @@ gulp.task('watch',
 gulp.task('default', gulp.series(
   'clean',
   'styles',
-  'images',
+  'responsive',
   'html',
   'data',
   'scripts',
+  'critical',
   'serviceworker',
   gulp.parallel('browser-sync','watch')
 ));
