@@ -1,7 +1,7 @@
 // "use strict";
 
 // ToDO: Install ServiceWorker
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 
 const urlsToCache = [
   '/',
@@ -21,7 +21,9 @@ const urlsToCache = [
   'img/7.jpg',
   'img/8.jpg',
   'img/9.jpg',
-  'img/10.jpg'
+  'img/10.jpg',
+  '//normalize-css.googlecode.com/svn/trunk/normalize.css',
+  '//maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap'
 ];
 
 
@@ -42,11 +44,38 @@ self.addEventListener('install', function(event) {
   );
 });
 
+// Register for a foreign fetch
+// ToDo
+self.addEventListener('install', event => {
+  event.registerForeignFetch({
+    scopes: ['/'],
+    origins: ['*']
+  });
+});
+
+// Listen for foreign fetch event
+// ToDo - Fix caching
+self.addEventListener('foreignfetch', event => {
+  event.respondWith(
+    fetch(event.request)
+      .catch(() => console.log('foreign', event.request))
+      .then(response => {
+        return fetch(event.origin);
+      })
+  );
+});
 
 // Check to see if we have a match request for event
 // If match, return match from cache
 self.addEventListener('fetch', function(event) {
-  console.log('WORKER: fetch event in progres..');
+  console.log('WORKER: fetch event in progress..');
+  // Attempt to cache Google Map API
+  new Response({
+    headers: {
+      'Link': '</service-worker.js>; rel="serviceworker"',
+      'Access-Control-Allow-Origin': '*'
+  }
+  });
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
