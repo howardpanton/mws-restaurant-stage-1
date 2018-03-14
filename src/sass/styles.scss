@@ -195,8 +195,20 @@ nav h1 a {
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
   min-width: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+#restaurants-list figure {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+#restaurants-list picture {
+  display: flex;
+  flex: 1;
 }
 
 #restaurants-list li h1 {
