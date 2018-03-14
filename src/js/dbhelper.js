@@ -167,4 +167,32 @@ class DBHelper {
     return marker;
   }
 
+  static onWindowResize() {
+    let width = document.body.clientWidth;
+    let mediaWidth = '';
+
+    if (width >= 1024) {
+      console.log('width changed 1', width);
+        mediaWidth = 'lrg-desktop';
+    } else if (width >= 768) {
+      console.log('width changed 2', width);
+      mediaWidth = 'desktop';
+    } else if (width >= 425) {
+      console.log('width changed 3', width);
+        mediaWidth = 'mobile-l';
+    } else if (width >= 375) {
+      console.log('width changed 4', width);
+      mediaWidth = 'mobile-m';
+    } else if (width >= 320) {
+      console.log('width changed 5', width);
+      mediaWidth = 'mobile-s';
+    }
+
+    document.body.className = '';
+    document.body.classList.add(mediaWidth);
+
+    return mediaWidth;
+ }
+
+
 }
