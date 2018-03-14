@@ -120,63 +120,363 @@ gulp.task('responsive', () => {
   return gulp.src('src/img/*.jpg')
     .pipe(responsive({
       '1.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '1.webp',
+          rename: '1-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '1-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '1-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '1-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '1-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '1-mobile-s.webp',
           format: 'webp'
         }],
         '2.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '2.webp',
+          rename: '2-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '2-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '2-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '2-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '2-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '2-mobile-s.webp',
           format: 'webp'
         }],
         '3.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '3.webp',
+          rename: '3-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '3-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '3-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '3-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '3-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '3-mobile-s.webp',
           format: 'webp'
         }],
         '4.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '4.webp',
+          rename: '4-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '4-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '4-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '4-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '4-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '4-mobile-s.webp',
           format: 'webp'
         }],
         '5.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '5.webp',
+          rename: '5-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '5-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '5-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '5-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '5-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '5-mobile-s.webp',
           format: 'webp'
         }],
         '6.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '6.webp',
+          rename: '6-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '6-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '6-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '6-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '6-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '6-mobile-s.webp',
           format: 'webp'
         }],
         '7.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '7.webp',
+          rename: '7-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '7-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '7-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '7-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '7-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '7-mobile-s.webp',
           format: 'webp'
         }],
         '8.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '8.webp',
+          rename: '8-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '8-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '8-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '8-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '8-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '8-mobile-s.webp',
           format: 'webp'
         }],
         '9.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '9.webp',
+          rename: '9-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '9-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '9-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '9-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '9-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '9-mobile-s.webp',
           format: 'webp'
         }],
         '10.jpg': [{
-          width: '80%',
+          width: '375',
           quality: 70,
-          rename: '10.webp',
+          rename: '10-lrg-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '10-desktop.webp',
+          format: 'webp'
+        },
+        {
+          width: '330',
+          quality: 70,
+          rename: '10-tablet.webp',
+          format: 'webp'
+        },
+        {
+          width: '363',
+          quality: 70,
+          rename: '10-mobile-l.webp',
+          format: 'webp'
+        },
+        {
+          width: '313',
+          quality: 70,
+          rename: '10-mobile-m.webp',
+          format: 'webp'
+        },
+        {
+          width: '290',
+          quality: 70,
+          rename: '10-mobile-s.webp',
           format: 'webp'
         }],
     }))
@@ -241,7 +541,7 @@ gulp.task('critical', () => {
         base: 'dist/',
         inline: true,
         css: ['dist/css/styles.css'],
-        timeout: 60000,
+        timeout: 80000,
       }))
       .pipe(gulp.dest('dist'));
 });
