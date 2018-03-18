@@ -1,13 +1,14 @@
 // "use strict";
 
 // ToDO: Install ServiceWorker
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v11:restaurant-app';
 
 const urlsToCache = [
   '/',
   'index.html',
   'restaurant.html',
   'css/styles.css',
+  'https://fonts.googleapis.com/css?family=Roboto:300,400',
   'data/restaurants.json',
   'js/dbhelper.js',
   'js/main.js',
@@ -22,8 +23,8 @@ const urlsToCache = [
   'img/8.jpg',
   'img/9.jpg',
   'img/10.jpg',
-  '//normalize-css.googlecode.com/svn/trunk/normalize.css',
-  '//maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap'
+  'https://normalize-css.googlecode.com/svn/trunk/normalize.css',
+  'https://maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap'
 ];
 
 
