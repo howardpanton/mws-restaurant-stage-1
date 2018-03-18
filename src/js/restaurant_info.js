@@ -1,6 +1,7 @@
 let restaurant;
 var map;
 
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -49,22 +50,37 @@ const fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 const fillRestaurantHTML = (restaurant = self.restaurant) => {
-  const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
+  const restaurantHTML = document.getElementById('restaurant-container');
+  // const name = document.getElementById('restaurant-name');
+  // name.innerHTML = restaurant.name;
 
-  const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+  // const address = document.getElementById('restaurant-address');
+  // address.innerHTML = restaurant.address;
 
-  const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  // const image = document.getElementById('restaurant-img');
+  // image.className = 'restaurant-img'
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
-  const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
+  // const cuisine = document.getElementById('restaurant-cuisine');
+  // cuisine.innerHTML = restaurant.cuisine_type;
+
+  const restaurantInfo = `
+    <h1 id="restaurant-name">${restaurant.name}</h1>
+    <div class="loading-ball">
+      <div></div>
+    </div>
+    <p id="restaurant-cuisine">${restaurant.cuisine_type}</p>
+    <p id="restaurant-address">${restaurant.address}</p>
+  `;
+
+  // console.log(restaurantInfo);
+
+  restaurantHTML.innerHTML = restaurantInfo;
+
 
   // fill operating hours
   if (restaurant.operating_hours) {
-    fillRestaurantHoursHTML();
+    restaurantHTML.insertAdjacentElement('beforeend', fillRestaurantHoursHTML());
   }
   // fill reviews
   fillReviewsHTML();
@@ -74,20 +90,28 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
 const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
-  const hours = document.getElementById('restaurant-hours');
-  for (let key in operatingHours) {
-    const row = document.createElement('tr');
+  const table = document.createElement('table');
+  table.setAttribute("id", "restaurant-hours");
 
-    const day = document.createElement('td');
-    day.innerHTML = key;
-    row.appendChild(day);
+  let hours = '';
 
-    const time = document.createElement('td');
-    time.innerHTML = operatingHours[key];
-    row.appendChild(time);
+  Object.keys(operatingHours).forEach((key) => {
+    hours +=  `<tr><td>${key}</td><td>${operatingHours[key]}</td></tr>`;
+    console.log(key, operatingHours[key]);
 
-    hours.appendChild(row);
-  }
+  });
+
+  // let hours = `
+  //     ${Object.keys(operatingHours).forEach((key) => {
+  //       `<tr><td>${key}</td><td>${operatingHours[key]}</td></tr>`;
+  //     )};
+
+  table.innerHTML = hours;
+
+  console.log(hours);
+
+  return table;
+
 }
 
 /**
