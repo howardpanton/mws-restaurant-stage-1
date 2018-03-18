@@ -19,6 +19,9 @@ import sequence from 'gulp-sequence';
 import clean from 'gulp-rimraf';
 import gutil from 'gulp-util';
 import critical from 'critical';
+import gzip from 'gulp-gzip';
+import htmlmin from 'gulp-htmlmin';
+import compression from 'compression';
 
 const  criticalStream = critical.stream;
 
@@ -62,7 +65,8 @@ const serviceworkerPaths = {
 gulp.task('browser-sync', () => {
   browserSync({
     server: {
-       baseDir: "./dist/"
+       baseDir: "./dist/",
+       middleware: compression()
     },
     open: false,
     port: 8000
@@ -541,8 +545,9 @@ gulp.task('critical', () => {
         base: 'dist/',
         inline: true,
         css: ['dist/css/styles.css'],
-        timeout: 80000,
+        timeout: 120000,
       }))
+      .pipe(htmlmin({collapseWhitespace: true}))
       .pipe(gulp.dest('dist'));
 });
 
