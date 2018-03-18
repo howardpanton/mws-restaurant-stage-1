@@ -16,7 +16,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 window.addEventListener("resize", (event) => {
   DBHelper.onWindowResize();
-});
+}, false);
+
+// Listen for the event.
+window.addEventListener('loaded', function (event) {
+  const restaurantsItems = document.querySelectorAll('.restaurant-item');
+
+  let index = 0;
+
+  for (const entry of restaurantsItems.entries()) {
+    const img = lazyLoadImages(event.detail[index]);
+    const loadingBall = entry[1].childNodes[1];
+    entry[1].removeChild(loadingBall);
+    entry[1].insertAdjacentHTML('beforeend', img);
+    index++;
+  }
+
+}, false);
+
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -131,12 +149,17 @@ const resetRestaurants = (restaurants) => {
  * Create all restaurants HTML and add them to the webpage.
  */
 const fillRestaurantsHTML = (restaurants = self.restaurants) => {
+  const event = new CustomEvent('loaded', { detail: restaurants});
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     // ul.appendChild(createRestaurantHTML(restaurant));
     ul.insertAdjacentHTML('beforeend', createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+
+  window.setTimeout(() => {
+    window.dispatchEvent(event);
+  }, 3000);
 }
 
 /**
@@ -144,9 +167,27 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 const createRestaurantHTML = (restaurant) => {
   const li = `
-    <li>
-      <figure>
-        ​<picture>
+    <li class="restaurant-item">
+      <div class="loading-ball">
+        <div></div>
+      </div>
+      <h3>${restaurant.name}</h3>
+      <p>${restaurant.neighborhood}</p>
+      <p class="address">${restaurant.address}</p>
+      <a href="${DBHelper.urlForRestaurant(restaurant)}">View Details</a>
+    </li>
+  `;
+
+  return li;
+}
+
+/**
+ * Lazy Load Images
+ */
+const lazyLoadImages = (restaurant) => {
+  const img = `
+    <figure>
+      ​<picture>
         <source srcset="${DBHelper.imageUrlForRestaurant(restaurant)
           .replace(/\.webp$/, "-lrg-desktop.webp")}"
           media="(min-width: 1024px)">
@@ -162,20 +203,16 @@ const createRestaurantHTML = (restaurant) => {
         <source srcset="${DBHelper.imageUrlForRestaurant(restaurant)
           .replace(/\.webp$/, "-mobile-s.webp")}"
           media="(min-width: 320px)">
-        <img class="restaurant-img" alt="${restaurant.alt}"
+        <img class="restaurant-img fade-in" alt="${restaurant.alt}"
         src="${DBHelper.imageUrlForRestaurant(restaurant)
           .replace(/\.webp$/, "-lrg-desktop.webp")}" >
-        </picture>
-      </figure>
-      <h1>${restaurant.name}</h1>
-      <p>${restaurant.neighborhood}</p>
-      <p>${restaurant.address}</p>
-      <a href="${DBHelper.urlForRestaurant(restaurant)}">View Details</a>
-    </li>
+      </picture>
+    </figure>
   `;
 
-  return li;
+  return img;
 }
+
 
 /**
  * Add markers for current restaurants to the map.
