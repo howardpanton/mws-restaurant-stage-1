@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+
+body,
+td,
+th,
+p {
+	font-family: $font-family;
+	font-size: 10pt;
+	color: $mine-shaft;
+	line-height: 1.5;
+}
+
+body {
+	background-color: $porcelian;
+	margin: 0;
+	position: relative;
+	min-width: 320px;
+}
+
+ul,
+li {
+	font-family: $font-family;
+	font-size: 10pt;
+	color: $mine-shaft;
+}
+
+a {
+	color: $cinnabar;
+	text-decoration: none;
+}
+
+a:hover, a:focus {
+	color: #3397db;
+	text-decoration: none;
+}
+
+a img {
+	border: none 0px #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family;
+  margin: 0 0 20px;
+}
+
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
