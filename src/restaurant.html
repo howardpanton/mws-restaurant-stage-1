@@ -1,70 +1,121 @@
 <!DOCTYPE html>
 <html>
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Add to home screen for Safari on iOS -->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <meta name="apple-mobile-web-app-title" content="Restaurant Review">
+      <meta name="msapplication-TileImage" content="img/icons/icon-144x144.png">
+      <meta name="msapplication-TileColor" content="#2F3BA2">
+      <meta name="theme-color" content="#f18200"/>
+      <link rel="dns-prefetch" rel="stylesheet"
+        src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+      <link rel="dns-prefetch"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400"
+        rel="stylesheet">
+      <link rel="stylesheet" href="css/styles.css">
+      <link rel="manifest" href="/data/manifest.json">
+      <link rel="apple-touch-icon" href="img/icons/icon-152x152.png">
+    <title>Restaurant Info</title>
+  </head>
+  <body class="inside">
+    <a class="skip-link" href="#maincontent">Skip to main content</a>
+    <!-- Beginning header -->
+    <header>
+      <!-- Beginning nav -->
+      <nav>
+        <svg viewBox="0 0 43 43" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <rect id="path-1" x="0" y="0" width="43" height="43"></rect>
+          </defs>
+          <g>
+            <g id="Rectangle">
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <rect stroke="#1B2630" stroke-width="1" x="0.5" y="0.5"
+                  width="42" height="42"></rect>
+            </g>
+            <g id="Group" transform="translate(11.000000, 3.000000)"
+              fill="#1B2630" fill-rule="nonzero">
+              <path d="M7.70474086,1 L7.37599775,8.34732894 L6.55413998,
+              8.34732894 L6.22539688,1 L5.32135333,1 L4.99261022,
+              8.34732894 L4.10911312,8.34732894 L3.78037002,1 L2.87632647,
+              1 L2.54758336,8.34732894 L1.66408626,8.34732894 L1.33534316,
+              1 L0.431299612,1 C0.0409171724,4.51930882 -1.21241592,
+              12.2988336 3.73927713,13.6160018 L2.87632647,32.5708756 C2.87632647,
+              35.8637962 6.36922199,35.8020539 6.36922199,32.4268103 L5.30080689,
+              13.6160018 C10.2524999,12.3194143 8.89643462,4.66337409 8.62933085,
+              1 L7.70474086,1 Z M5.42408555,34.2173359 C4.52004201,
+              34.628951 3.36944113,33.9086246 3.36944113,32.0563568 L4.12965957,
+              13.6365825 L4.33512401,13.6365825 L4.0063809,31.953453 C4.0063809,
+              33.373525 4.68441356,34.1350129 5.42408555,34.2173359 Z"></path>
+              <path d="M21,7.07319375 C21,3.16710168 18.9841629,0 16.5,
+              0 C14.0158371,0 12,3.16710168 12,7.07319375 C12,10.5781196 13.6085973,
+              13.4707391 15.7262443,14.0408174 L14.7692308,33.5079358 C14.7692308,
+              36.8861776 18.2307692,36.8228355 18.2307692,33.3601377 L17.2737557,
+              14.0619315 C19.3914027,13.4918532 21,10.5781196 21,
+              7.07319375 Z M16.9479638,2.15362914 C15.0746606,2.15362914 13.5475113,
+              4.75065252 13.5475113,7.95998222 C13.5475113,9.18459487 13.7714932,
+              10.3247515 14.158371,11.274882 C13.4864253,10.2191814 13.0588235,
+              8.69897261 13.0588235,7.00985172 C13.0588235,3.80052201 14.5859729,
+              1.20349864 16.459276,1.20349864 C17.6199095,1.20349864 18.638009,
+              2.19585716 19.2488688,3.69495196 C18.638009,2.74482145 17.8235294,
+              2.15362914 16.9479638,2.15362914 Z"></path>
+            </g>
+          </g>
+        </svg>
+        <h1><a href="/">Restaurant Reviews</a></h1>
+      </nav>
+      <!-- Beginning breadcrumb -->
+      <ul id="breadcrumb" >
+        <li><a href="/">Home</a></li>
+      </ul>
+      <!-- End breadcrumb -->
+      <!-- End nav -->
+    </header>
+    <!-- End header -->
 
-<head>
-  <!-- Normalize.css for better cross-browser consistency -->
-  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
-  <link rel="manifest" href="/data/manifest.json">
-  <title>Restaurant Info</title>
-</head>
+    <!-- Beginning main -->
+    <main id="maincontent">
+      <!-- Beginning map -->
+      <section id="map-container">
+        <div id="map"></div>
+      </section>
+      <!-- End map -->
+      <!-- Beginning restaurant -->
+      <section id="restaurant-container">
+        <!-- <h1 id="restaurant-name"></h1>
+        <img id="restaurant-img">
+        <p id="restaurant-cuisine"></p>
+        <p id="restaurant-address"></p> -->
+        <!-- <table id="restaurant-hours"></table> -->
+      </section>
+      <!-- end restaurant -->
+      <!-- Beginning reviews -->
+      <section id="reviews-container">
+        <ul id="reviews-list"></ul>
+      </section>
+      <!-- End reviews -->
+    </main>
+    <!-- End main -->
 
-<body class="inside">
-  <!-- Beginning header -->
-  <header>
-    <!-- Beginning nav -->
-    <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
-    </nav>
-    <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" >
-      <li><a href="/">Home</a></li>
-    </ul>
-    <!-- End breadcrumb -->
-    <!-- End nav -->
-  </header>
-  <!-- End header -->
+    <!-- Beginning footer -->
+    <footer id="footer">
+      Copyright (c) 2018 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    </footer>
+    <!-- End footer -->
 
-  <!-- Beginning main -->
-  <main id="maincontent">
-    <!-- Beginning map -->
-    <section id="map-container">
-      <div id="map"></div>
-    </section>
-    <!-- End map -->
-    <!-- Beginning restaurant -->
-    <section id="restaurant-container">
-      <!-- <h1 id="restaurant-name"></h1>
-      <img id="restaurant-img">
-      <p id="restaurant-cuisine"></p>
-      <p id="restaurant-address"></p> -->
-      <!-- <table id="restaurant-hours"></table> -->
-    </section>
-    <!-- end restaurant -->
-    <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <ul id="reviews-list"></ul>
-    </section>
-    <!-- End reviews -->
-  </main>
-  <!-- End main -->
-
-  <!-- Beginning footer -->
-  <footer id="footer">
-    Copyright (c) 2018 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
-  </footer>
-  <!-- End footer -->
-
-  <!-- Beginning scripts -->
-  <!-- Database helpers -->
-  <script type="text/javascript" src="js/dbhelper.js"></script>
-  <!-- Main javascript file -->
-  <script type="text/javascript" src="js/restaurant_info.js"></script>
-  <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap"></script>
-  <!-- End scripts -->
-
-</body>
-
+    <!-- Beginning scripts -->
+    <!-- Database helpers -->
+    <script type="text/javascript" src="js/dbhelper.js"></script>
+      <!-- Database helpers -->
+      <script type="text/javascript" src="js/imghelper.js"></script>
+    <!-- Main javascript file -->
+    <script type="text/javascript" src="js/restaurant_info.js"></script>
+    <!-- Google Maps -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap"></script>
+    <!-- End scripts -->
+  </body>
 </html>
