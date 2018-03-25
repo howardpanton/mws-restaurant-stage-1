@@ -21,6 +21,21 @@ window.initMap = () => {
   });
 }
 
+window.addEventListener('loaded', function (event) {
+  const restaurantItem = document.getElementById('restaurant-container');
+  const gridInfo = document.querySelectorAll('.info-grid');
+  console.log(event, "detail");
+  let img = ImageHelper.lazyLoadImages(event.detail);
+  img = document.createRange().createContextualFragment(img);
+  const loadingBall = restaurantItem.childNodes[1];
+  console.log(restaurantItem.childNodes, "item");
+  restaurantItem.removeChild(restaurantItem.childNodes[3]);
+  console.log(gridInfo, "item updated");
+ // restaurantItem.insertAdjacentHTML('afterbegin', img);
+ gridInfo[0].insertBefore(img, gridInfo[0].childNodes[1]);
+}, false);
+
+
 /**
  * Get current restaurant from page URL.
  */
@@ -50,27 +65,20 @@ const fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 const fillRestaurantHTML = (restaurant = self.restaurant) => {
+  const event = new CustomEvent('loaded', { detail: restaurant});
   const restaurantHTML = document.getElementById('restaurant-container');
-  // const name = document.getElementById('restaurant-name');
-  // name.innerHTML = restaurant.name;
-
-  // const address = document.getElementById('restaurant-address');
-  // address.innerHTML = restaurant.address;
-
-  // const image = document.getElementById('restaurant-img');
-  // image.className = 'restaurant-img'
-  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
-
-  // const cuisine = document.getElementById('restaurant-cuisine');
-  // cuisine.innerHTML = restaurant.cuisine_type;
 
   const restaurantInfo = `
-    <h1 id="restaurant-name">${restaurant.name}</h1>
+    <h2 id="restaurant-name">${restaurant.name}</h2>
     <div class="loading-ball">
       <div></div>
     </div>
-    <p id="restaurant-cuisine">${restaurant.cuisine_type}</p>
-    <p id="restaurant-address">${restaurant.address}</p>
+    <div class="info-grid">
+      <p id="restaurant-cuisine">${restaurant.cuisine_type}</p>
+    </div>
+    <div class="details-grid">
+      <p id="restaurant-address">${restaurant.address}</p>
+    </div>
   `;
 
   // console.log(restaurantInfo);
@@ -80,10 +88,16 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   // fill operating hours
   if (restaurant.operating_hours) {
-    restaurantHTML.insertAdjacentElement('beforeend', fillRestaurantHoursHTML());
+    const gridDetail = document.querySelectorAll('.details-grid');
+    gridDetail[0].insertBefore(fillRestaurantHoursHTML(), gridDetail[0].childNodes[2]);
+    // gridDetail.insertAdjacentElement('beforeend', fillRestaurantHoursHTML());
   }
   // fill reviews
   fillReviewsHTML();
+
+  window.setTimeout(() => {
+    window.dispatchEvent(event);
+  }, 3000);
 }
 
 /**
@@ -95,20 +109,12 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 
   let hours = '';
 
+  // Loop through operating hours and build table rows
   Object.keys(operatingHours).forEach((key) => {
     hours +=  `<tr><td>${key}</td><td>${operatingHours[key]}</td></tr>`;
-    console.log(key, operatingHours[key]);
-
   });
 
-  // let hours = `
-  //     ${Object.keys(operatingHours).forEach((key) => {
-  //       `<tr><td>${key}</td><td>${operatingHours[key]}</td></tr>`;
-  //     )};
-
   table.innerHTML = hours;
-
-  console.log(hours);
 
   return table;
 
@@ -119,19 +125,25 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
-  title.innerHTML = 'Reviews';
-  container.appendChild(title);
+
+  let review = `
+    <h2>Reviews</h2>
+  `;
 
   if (!reviews) {
-    const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
+    review += `<p>No reviews yet!'</p>`;
+    container.innerHtml = review;
+    //container.insertAdjacentElement('beforeend', review);
     return;
   }
+
+  // const title = document.createElement('h2');
+  // title.innerHTML = 'Reviews';
+  // container.appendChild(title);
+
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
+    ul.insertAdjacentHTML('beforeend', createReviewHTML(review));
   });
   container.appendChild(ul);
 }
@@ -140,22 +152,17 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = (review) => {
-  const li = document.createElement('li');
-  const name = document.createElement('p');
-  name.innerHTML = review.name;
-  li.appendChild(name);
-
-  const date = document.createElement('p');
-  date.innerHTML = review.date;
-  li.appendChild(date);
-
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
-
-  const comments = document.createElement('p');
-  comments.innerHTML = review.comments;
-  li.appendChild(comments);
+  const starRating = `&#11088;`;
+  const li = `
+    <li>
+      <p>${review.name}</p>
+      <p>${review.date}</p>
+      <p>Rating:${Array(review.rating).join(0).split(0).map((item, i) => `
+      ${starRating}
+    `).join('')}</p>
+      <p>${review.comments}</p>
+    </li>
+  `;
 
   return li;
 }
