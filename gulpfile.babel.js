@@ -588,7 +588,7 @@ gulp.task('default', gulp.series(
   'html',
   'data',
   'scripts',
-  'critical',
   'serviceworker',
+  'critical',
   gulp.parallel('browser-sync','watch')
 ));
