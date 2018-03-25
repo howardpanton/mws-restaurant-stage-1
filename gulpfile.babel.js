@@ -47,7 +47,7 @@ const jsPaths = {
 };
 
 const imgPaths = {
-  src: `${dirs.src}/img/*.jpg`,
+  src: `${dirs.src}/img/icons/*.png`,
   dest: `${dirs.dest}/img/`
 };
 
@@ -104,7 +104,7 @@ gulp.task('clean', () => {
 });
 
 // Copy images and optimize
-gulp.task('images', () => {
+gulp.task('imageIcons', () => {
   return gulp.src(imgPaths.src)
     .pipe(plumber({
       errorHandler: function (error) {
@@ -585,6 +585,7 @@ gulp.task('default', gulp.series(
   'clean',
   'styles',
   'responsive',
+  'imageIcons',
   'html',
   'data',
   'scripts',
