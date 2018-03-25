@@ -81,10 +81,8 @@ self.addEventListener('fetch', function(event) {
     caches.match(event.request)
       .then(function(response) {
         if (response) {
-          console.log('response', response);
           return response;
         }
-        console.log('request', event.request);
         return fetch(event.request).then(function(response) {
           if (response.status == 404) {
             return new Response("Page not found");
