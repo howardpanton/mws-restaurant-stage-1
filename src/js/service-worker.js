@@ -1,7 +1,4 @@
-// "use strict";
-
-// ToDO: Install ServiceWorker
-const CACHE_VERSION = 'v11:restaurant-app';
+"use strict";
 
 const urlsToCache = [
   '/',
@@ -10,87 +7,143 @@ const urlsToCache = [
   'css/styles.css',
   'https://fonts.googleapis.com/css?family=Roboto:300,400',
   'data/restaurants.json',
-  'js/dbhelper.js',
+  'data/manifest.json',
+  'js/img-helper.js',
+  'js/cached-files.js',
+  'js/db-helper.js',
   'js/main.js',
-  'js/restaurant_info.js',
-  'img/1.jpg',
-  'img/2.jpg',
-  'img/3.jpg',
-  'img/4.jpg',
-  'img/5.jpg',
-  'img/6.jpg',
-  'img/7.jpg',
-  'img/8.jpg',
-  'img/9.jpg',
-  'img/10.jpg',
-  'https://normalize-css.googlecode.com/svn/trunk/normalize.css',
-  'https://maps.googleapis.com/maps/api/js?key=AIzaSyCHgJMUUZeJrW9cebfuJbVyc4rILoi8kOM&libraries=places&callback=initMap'
+  'js/restaurant-info.js',
+  'img/1-mobile-s.webp',
+  'img/1-mobile-m.webp',
+  'img/1-mobile-l.webp',
+  'img/1-lrg-desktop.webp',
+  'img/1-desktop.webp',
+  'img/1-tablet.webp',
+  'img/2-mobile-s.webp',
+  'img/2-mobile-m.webp',
+  'img/2-mobile-l.webp',
+  'img/2-lrg-desktop.webp',
+  'img/2-desktop.webp',
+  'img/2-tablet.webp',
+  'img/3-mobile-s.webp',
+  'img/3-mobile-m.webp',
+  'img/3-mobile-l.webp',
+  'img/3-lrg-desktop.webp',
+  'img/3-desktop.webp',
+  'img/3-tablet.webp',
+  'img/4-mobile-s.webp',
+  'img/4-mobile-m.webp',
+  'img/4-mobile-l.webp',
+  'img/4-lrg-desktop.webp',
+  'img/4-desktop.webp',
+  'img/4-tablet.webp',
+  'img/5-mobile-s.webp',
+  'img/5-mobile-m.webp',
+  'img/5-mobile-l.webp',
+  'img/5-lrg-desktop.webp',
+  'img/5-desktop.webp',
+  'img/5-tablet.webp',
+  'img/6-mobile-s.webp',
+  'img/6-mobile-m.webp',
+  'img/6-mobile-l.webp',
+  'img/6-lrg-desktop.webp',
+  'img/6-desktop.webp',
+  'img/6-tablet.webp',
+  'img/7-mobile-s.webp',
+  'img/7-mobile-m.webp',
+  'img/7-mobile-l.webp',
+  'img/7-lrg-desktop.webp',
+  'img/7-desktop.webp',
+  'img/7-tablet.webp',
+  'img/8-mobile-s.webp',
+  'img/8-mobile-m.webp',
+  'img/8-mobile-l.webp',
+  'img/8-lrg-desktop.webp',
+  'img/8-desktop.webp',
+  'img/8-tablet.webp',
+  'img/9-mobile-s.webp',
+  'img/9-mobile-m.webp',
+  'img/9-mobile-l.webp',
+  'img/9-lrg-desktop.webp',
+  'img/9-desktop.webp',
+  'img/9-tablet.webp',
+  'img/10-mobile-s.webp',
+  'img/10-mobile-m.webp',
+  'img/10-mobile-l.webp',
+  'img/10-lrg-desktop.webp',
+  'img/10-desktop.webp',
+  'img/10-tablet.webp',
+  'img/Icon-128x128.png',
+  'img/Icon-144x144.png',
+  'img/Icon-152x152.png',
+  'img/Icon-196x196.png',
+  'img/Icon-256x256.png',
 ];
 
+// ToDO: Install ServiceWorker
+const CACHE_VERSION = 'v24:restaurant-app';
+const RUNTIME = 'runtime';
 
 // Install the service worker and cache files
 // ToDo add caching for Google map
-self.addEventListener('install', function(event) {
+self.addEventListener('install', (event) => {
   console.log('Service Worker: install');
   event.waitUntil(
-    caches.open(CACHE_VERSION).then(function(cache) {
+    caches.open(CACHE_VERSION).then((cache) => {
       return cache.addAll(urlsToCache);
     })
-    .then(function() {
+    .then(() => {
       console.log('Service Worker: complete');
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log('Service Worker: errorr', err);
     })
   );
 });
 
-// Register for a foreign fetch
-// ToDo
-self.addEventListener('install', event => {
-  event.registerForeignFetch({
-    scopes: ['/'],
-    origins: ['*']
-  });
-});
 
-// Listen for foreign fetch event
-// ToDo - Fix caching
-self.addEventListener('foreignfetch', event => {
-  event.respondWith(
-    fetch(event.request)
-      .catch(() => console.log('foreign', event.request))
-      .then(response => {
-        return fetch(event.origin);
-      })
+self.addEventListener("activate", (event) =>{
+  console.log('Service Worker: activate');
+  const currentCaches = [CACHE_VERSION, RUNTIME];
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          console.log(cacheName, "cache name");
+          if (cacheName => !currentCaches.includes(cacheName)) {
+            console.log(cacheName, "delete cache name");
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
 
+
 // Check to see if we have a match request for event
 // If match, return match from cache
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', (event) => {
   console.log('WORKER: fetch event in progress..');
   // Attempt to cache Google Map API
-  new Response({
-    headers: {
-      'Link': '</service-worker.js>; rel="serviceworker"',
-      'Access-Control-Allow-Origin': '*'
-  }
-  });
+
   event.respondWith(
     caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          return response;
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
-        return fetch(event.request).then(function(response) {
-          if (response.status == 404) {
-            return new Response("Page not found");
-          }
-          return response;
-        }).catch(function() {
-          return new Response("Sorry we are having issues");
-        })
+        return caches.open(RUNTIME).then(cache => {
+          return fetch(event.request).then(response => {
+            if (response.status == 404) {
+              return new Response("Page not found");
+            }
+            // Put a copy of the response in the runtime cache.
+            return cache.put(event.request, response.clone()).then(() => {
+              return response;
+            });
+          });
+        });
       }
     )
   );
