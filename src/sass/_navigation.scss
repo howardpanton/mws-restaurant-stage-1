@@ -46,16 +46,24 @@ nav {
 
 
   #breadcrumb {
-    padding: 10px 40px 16px;
+    padding: 10px 20px 16px;
     list-style: none;
     background-color: $marriner;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
+    width: calc(50% - 40px);
+
+    @include mobile-tablet {
+        width: 100%;
+    }
 
     /* Display list items side by side */
     li {
         display: inline;
+        color: #080808;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 1.5;
 
         /* Add a slash symbol (/) before/behind each list item */
         + li:before {
@@ -66,12 +74,12 @@ nav {
 
         /* Add a color to all links inside the list */
         a {
-            color: #0275d8;
-            text-decoration: none;
+            color: #080808;
+            font-size: 22px;
+            font-weight: 300;
 
             /* Add a color on mouse-over */
             &:hover {
-                color: #01447e;
                 text-decoration: underline;
             }
         }
