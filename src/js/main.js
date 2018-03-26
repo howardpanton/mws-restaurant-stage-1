@@ -164,15 +164,17 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 const createRestaurantHTML = (restaurant) => {
+  let style = restaurant.name.replace(/\s+/g, '-').toLowerCase();
   const li = `
     <li class="restaurant-item">
       <div class="loading-ball">
         <div></div>
       </div>
-      <h3>${restaurant.name}</h3>
-      <p>${restaurant.neighborhood}</p>
-      <p class="address">${restaurant.address}</p>
-      <a href="${DBHelper.urlForRestaurant(restaurant)}">View Details</a>
+      <h3 id="name-${style}">${restaurant.name}</h3>
+      <p id="neighborhood-${style}">${restaurant.neighborhood}</p>
+      <p id="address-${style}">${restaurant.address}</p>
+      <a aria-labelledby="name-${style} neighborhood-${style} address-${style}"
+        href="${DBHelper.urlForRestaurant(restaurant)}">View Details</a>
     </li>
   `;
 

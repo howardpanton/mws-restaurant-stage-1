@@ -81,7 +81,7 @@ const urlsToCache = [
 ];
 
 // ToDO: Install ServiceWorker
-const CACHE_VERSION = 'v24:restaurant-app';
+const CACHE_VERSION = 'v26:restaurant-app';
 const RUNTIME = 'runtime';
 
 // Install the service worker and cache files
@@ -139,9 +139,7 @@ self.addEventListener('fetch', (event) => {
               return new Response("Page not found");
             }
             // Put a copy of the response in the runtime cache.
-            return cache.put(event.request, response.clone()).then(() => {
               return response;
-            });
           });
         });
       }

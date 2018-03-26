@@ -24,14 +24,14 @@ window.initMap = () => {
 window.addEventListener('loaded', function (event) {
   const restaurantItem = document.getElementById('restaurant-container');
   const gridInfo = document.querySelectorAll('.info-grid');
-  console.log(event, "detail");
+
   let img = ImageHelper.lazyLoadImages(event.detail);
   img = document.createRange().createContextualFragment(img);
   const loadingBall = restaurantItem.childNodes[1];
-  console.log(restaurantItem.childNodes, "item");
+
   restaurantItem.removeChild(restaurantItem.childNodes[3]);
-  console.log(gridInfo, "item updated");
- // restaurantItem.insertAdjacentHTML('afterbegin', img);
+
+
  gridInfo[0].insertBefore(img, gridInfo[0].childNodes[1]);
 }, false);
 
@@ -173,6 +173,7 @@ const createReviewHTML = (review) => {
 const fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
+  li.setAttribute("aria-current", restaurant.name);
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
 }

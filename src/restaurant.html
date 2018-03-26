@@ -22,7 +22,9 @@
     <title>Restaurant Info</title>
   </head>
   <body class="inside">
-    <a class="skip-link" href="#maincontent">Skip to main content</a>
+    <div id="status" role="alert"></div>
+    <a class="skip-link" href="#map">Skip to map content</a>
+    <a class="skip-link" href="#reviews-list">Skip to main content</a>
     <!-- Beginning header -->
     <header>
       <!-- Beginning nav -->
@@ -69,7 +71,7 @@
         <h1><a href="/">Restaurant Reviews</a></h1>
       </nav>
       <!-- Beginning breadcrumb -->
-      <ul id="breadcrumb" >
+      <ul id="breadcrumb" aria-label="Breadcrumb">
         <li><a href="/">Home</a></li>
       </ul>
       <!-- End breadcrumb -->

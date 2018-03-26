@@ -25,9 +25,11 @@ const updateStatus = (event) =>{
   if (condition === "offline") {
     status.className = condition;
     status.insertAdjacentHTML("beforeend", "Status: Website " + condition);
+    status.setAttribute("aria-live", "assertive");
   } else if (condition === "online") {
     status.className = '';
     status.innerHTML = '';
+    status.removeAttribute("aria-live");
   }
 }
 
@@ -53,15 +55,19 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
-    .then(function(response) {
-      const json = JSON.parse(repsonse);
-      const restaurants = json.restaurants;
-      callback(null, restaurants);
-    }).catch(function(error) {
-      const error = (`Request failed. Returned status of ${response.status}`);
-      callback(error, null);
-    });
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.DATABASE_URL);
+    xhr.onload = () => {
+      if (xhr.status === 200) { // Got a success response from server!
+        const json = JSON.parse(xhr.responseText);
+        const restaurants = json.restaurants;
+        callback(null, restaurants);
+      } else { // Oops!. Got an error from server.
+        const error = (`Request failed. Returned status of ${xhr.status}`);
+        callback(error, null);
+      }
+    };
+    xhr.send();
   }
 
   /**
