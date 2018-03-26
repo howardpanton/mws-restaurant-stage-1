@@ -593,3 +593,16 @@ gulp.task('default', gulp.series(
   'critical',
   gulp.parallel('browser-sync','watch')
 ));
+
+// Default task
+gulp.task('production', gulp.series(
+  'clean',
+  'styles',
+  'responsive',
+  'imageIcons',
+  'html',
+  'data',
+  'scripts',
+  'serviceworker',
+  'critical'
+));
