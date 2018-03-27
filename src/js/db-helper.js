@@ -17,6 +17,7 @@ const registerSW = () => {
 
 /**
  * Update the User when the website is offline.
+ *  https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events
  */
 const updateStatus = (event) =>{
   const status = document.getElementById("status");
