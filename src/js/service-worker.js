@@ -1,5 +1,9 @@
 "use strict";
 
+// https://css-tricks.com/serviceworker-for-offline/
+// https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
+// https://www.safaribooksonline.com/library/view/building-progressive-web/9781491961643/ch04.html
+
 const urlsToCache = [
   '/',
   'index.html',
