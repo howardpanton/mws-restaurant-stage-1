@@ -89,5 +89,17 @@ section {
 		  background: #b50606;
 		  color: white;
 		  font-weight: 400;
+		  width: 100%;
 	  }
+  }
+
+
+  body.inside {
+	#status {
+		&.offline {
+			z-index: 9999;
+			position: absolute;
+			top: 0;
+		}
+	}
   }

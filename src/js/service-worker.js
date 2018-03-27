@@ -140,6 +140,8 @@ self.addEventListener('fetch', (event) => {
             }
             // Put a copy of the response in the runtime cache.
               return response;
+          }).catch(() => {
+            return new Response("uh oh that wasnt supposed to happen");
           });
         });
       }

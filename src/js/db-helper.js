@@ -23,6 +23,7 @@ const updateStatus = (event) =>{
   const condition = navigator.onLine ? "online" : "offline";
 
   if (condition === "offline") {
+    console.log(condition, 'status');
     status.className = condition;
     status.insertAdjacentHTML("beforeend", "Status: Website " + condition);
     status.setAttribute("aria-live", "assertive");
