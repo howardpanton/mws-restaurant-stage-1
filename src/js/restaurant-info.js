@@ -25,12 +25,13 @@ window.addEventListener('loaded', function (event) {
   const restaurantItem = document.getElementById('restaurant-container');
   const gridInfo = document.querySelectorAll('.info-grid');
 
+  // Image HTML is created in /img-helper-js
+  // AL tag for Img Element is set in the lazyLoadImages function
   let img = ImageHelper.lazyLoadImages(event.detail);
   img = document.createRange().createContextualFragment(img);
   const loadingBall = restaurantItem.childNodes[1];
 
   restaurantItem.removeChild(restaurantItem.childNodes[3]);
-
 
  gridInfo[0].insertBefore(img, gridInfo[0].childNodes[1]);
 }, false);
@@ -81,16 +82,12 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     </div>
   `;
 
-  // console.log(restaurantInfo);
-
   restaurantHTML.innerHTML = restaurantInfo;
-
 
   // fill operating hours
   if (restaurant.operating_hours) {
     const gridDetail = document.querySelectorAll('.details-grid');
     gridDetail[0].insertBefore(fillRestaurantHoursHTML(), gridDetail[0].childNodes[2]);
-    // gridDetail.insertAdjacentElement('beforeend', fillRestaurantHoursHTML());
   }
   // fill reviews
   fillReviewsHTML();
@@ -117,7 +114,6 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
   table.innerHTML = hours;
 
   return table;
-
 }
 
 /**
@@ -133,13 +129,8 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   if (!reviews) {
     review += `<p>No reviews yet!'</p>`;
     container.innerHtml = review;
-    //container.insertAdjacentElement('beforeend', review);
     return;
   }
-
-  // const title = document.createElement('h2');
-  // title.innerHTML = 'Reviews';
-  // container.appendChild(title);
 
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {

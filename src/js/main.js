@@ -26,6 +26,8 @@ window.addEventListener('loaded', function (event) {
   let index = 0;
   // loaded image files
   for (const entry of restaurantsItems.entries()) {
+    // Image HTML is created in /img-helper-js
+    // AL tag for Img Element is set in the lazyLoadImages function
     const img = ImageHelper.lazyLoadImages(event.detail[index]);
     const loadingBall = entry[1].childNodes[1];
     entry[1].removeChild(loadingBall);
