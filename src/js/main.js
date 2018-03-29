@@ -193,7 +193,9 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+
   google.maps.event.addListener(map, 'tilesloaded', function(evt) {
+     // MWS Slack/restaurant-project hack to add tabindes -1
     document.querySelectorAll('#map *').forEach(function(item){
       item.setAttribute('tabindex','-1');
     });
