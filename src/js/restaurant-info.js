@@ -123,7 +123,7 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
 
   let review = `
-    <h2>Reviews</h2>
+    <h3>Reviews</h3>
   `;
 
   if (!reviews) {

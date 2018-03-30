@@ -25,7 +25,7 @@ static lazyLoadImages(restaurant) {
           <source srcset="${DBHelper.imageUrlForRestaurant(restaurant)
             .replace(/\.webp$/, "-mobile-s.webp")}"
             media="(min-width: 320px)">
-          <img class="restaurant-img fade-in" alt="${restaurant.alt}"
+          <img class="restaurant-img fade-in" alt="Image of ${restaurant.name} Restaurant"
           src="${DBHelper.imageUrlForRestaurant(restaurant)
             .replace(/\.webp$/, "-lrg-desktop.webp")}" >
         </picture>
