@@ -64,6 +64,7 @@ nav {
     font-size: 17px;
     margin: 0;
     width: calc(50% - 40px);
+    display: flex;
 
     @include mobile-tablet {
         width: 100%;
