@@ -46,7 +46,7 @@ export class RestaurantService {
                 if (!restaurants || restaurants.length === 0) {
                     const response = await fetch(request);
                     restaurants = await response.json();
-                    const db = await openDatabase();
+                    const db = await this.idbService.init();
                     restaurants.forEach(
                         restaurant => db.transaction("restaurants", 'readwrite')
                         .objectStore("restaurants")
