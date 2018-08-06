@@ -49,7 +49,6 @@ export class HomeComponent {
 
     // Load the elements need for the Home Page.
     load() {
-        console.log('loading from Home ');
         this.updateRestaurants();
         this.fetchNeighborhoods();
         this.fetchCuisines();
@@ -131,7 +130,6 @@ export class HomeComponent {
         this.nIndex = this.nSelect.selectedIndex;
         this.cuisine = this.cSelect[this.cIndex].value;
         this.neighborhood = this.nSelect[this.nIndex].value;
-        console.log(this.neighborhood, 'test');
         this.restaurantService.fetchRestaurantByCuisineAndNeighborhood(
             this.cuisine,
             this.neighborhood,
