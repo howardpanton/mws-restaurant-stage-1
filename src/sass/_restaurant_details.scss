@@ -213,3 +213,63 @@ table {
     font-size: 14px;
     font-weight: 300;
 }
+
+.add-review {
+    background: #d1d3d4;
+    margin: 20px;
+    padding: 20px;
+    width: 70%;
+    form {
+        display: flex;
+        flex-direction: column;
+        label {
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 4px;
+            width: 100%;
+        }
+        input {
+            font-size: 16px;
+            line-height: 30px;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+        .field-set {
+            border: none;
+            flex-direction: column;
+            margin-bottom: 10px;
+            padding: 0;
+        }
+        select {
+            font-size: 16px;
+            line-height: 32px;
+            width: 100%;
+        }
+        .form-errors {
+            color: red;
+            display: none;
+        }
+        .form-errors.has-error {
+            display: block;
+        }
+        textarea {
+            font-size: 16px;
+            min-height: 200px;
+            width: 100%;
+        }
+        button {
+            background: #ff6656;
+            border-bottom: 2px solid #922020;
+            color: white;
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            text-transform: uppercase;
+            width: 100%;
+            &:hover {
+                background: darken(#ff6656, 10%);
+                cursor: pointer;
+            }
+        }
+    }
+}
