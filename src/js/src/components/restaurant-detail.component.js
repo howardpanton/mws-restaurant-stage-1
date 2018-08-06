@@ -4,6 +4,13 @@ import {
 import {
     RestaurantService
 } from '../services/restaurant.service';
+import {
+    MessageService
+} from '../services/message.service';
+import {
+    ReviewService
+} from '../services/review.service';
+
 
 
 export class RestaurantDetailComponent {
@@ -11,6 +18,8 @@ export class RestaurantDetailComponent {
     map;
     restaurant;
     restaurantService;
+    reviewService;
+    messageService;
 
 
     constructor() {
@@ -18,6 +27,8 @@ export class RestaurantDetailComponent {
         this.helper.onWindowResize();
         document.body.classList.add('inside');
         this.restaurantService = new RestaurantService();
+        this.reviewService = new ReviewService();
+        this.messageService = new MessageService();
 
         // Listen for widow resize event
         window.addEventListener(
@@ -28,6 +39,12 @@ export class RestaurantDetailComponent {
             },
             false
         );
+
+        // Handle form submission on User click
+        const submitButton = document.getElementsByClassName('submit-review');
+        submitButton[0].addEventListener('click', this.formHandler, {
+            passive: false
+        });
 
     };
 
@@ -59,8 +76,111 @@ export class RestaurantDetailComponent {
                 }
             });
         }
+        // Listen to form field changes
+        document.querySelector('select[name="rating"]')
+            .onchange = this.changeEventHandler;
+        document.querySelector('input[name="name"]')
+            .onchange = this.changeEventHandler;
+        document.querySelector('textarea[name="comments"]')
+            .onchange = this.changeEventHandler;
+
+        // Check if we have any offline data to input
+        window.addEventListener('online', this.checkForStoredOfflineData);
     }
 
+    // Handle form
+    formHandler = (event) => {
+        event.preventDefault();
+        const form = new FormData(document.getElementById('review'));
+        this.validateForm(form)
+    }
+
+
+    validateForm = (form) => {
+        const ID = this.getParameterByName('id');
+        const validatedFields = {
+            'restaurant_id': parseInt(ID, 10),
+            'name': null,
+            'rating': null,
+            'comments': null
+        };
+
+        for (const entry of form) {
+            if (entry[1] === '') {
+                this.addFormError(entry[0]);
+            } else {
+                validatedFields[entry[0]] = entry[1];
+            }
+        }
+        if (validatedFields['name'] &&
+            validatedFields['rating'] && validatedFields['comments']) {
+            // Check if online
+            // Store in SessionStorage
+            if (this.helper.offLineStatus === 'offline') { // true|false
+                this.storeUntilOnline(validatedFields);
+            } else {
+                this.postReviewToApi(validatedFields);
+            }
+
+        }
+
+    }
+
+    checkForStoredOfflineData = () => {
+        const offlineData = JSON.parse(window.localStorage.getItem('reviews'));
+        if (offlineData) {
+            offlineData.forEach((data) => {
+                this.postReviewToApi(data);
+            })
+        }
+        window.localStorage.removeItem('reviews');
+    }
+
+
+
+    storeUntilOnline = (validatedFields) => {
+        let reviews = [];
+        const offlineData = window.localStorage.getItem('reviews');
+        if (offlineData) {
+            const data = JSON.parse(offlineData);
+            reviews = [data]
+        }
+        reviews.push(validatedFields)
+        window.localStorage.setItem('reviews', JSON.stringify(reviews));
+        this.showToasterMessage('Thanks for the review, we will post to site as soon as you are back online');
+        location.reload();
+    }
+
+    showToasterMessage = (message) => {
+        // Update the UI with a feedback message
+        window.localStorage.setItem('message', message);
+    }
+
+    changeEventHandler = (event) => {
+        // You can use “this” to refer to the selected element.
+        if (!event.target.value) this.addFormError(event.target.name);
+        else this.removeFormError(event.target.name);
+    }
+
+    addFormError = (field) => {
+        const showError = document.querySelectorAll(`.${field}-error`);
+        showError[0].classList.add('has-error');
+    }
+
+    removeFormError = (field) => {
+        const hideError = document.querySelectorAll(`.${field}-error`);
+        hideError[0].classList.remove('has-error');
+    }
+
+    postReviewToApi = (validatedFields) => {
+        this.reviewService.createReview(validatedFields);
+        this.reviewService.deleteReview(validatedFields.restaurant_id)
+            .then(result => {
+                console.log('done');
+            });
+        this.showToasterMessage(`Thanks for the review, ${validatedFields['name']}`);
+        location.reload();
+    }
 
     /**
      * Lazy Load Images after the page has loaded.
@@ -172,24 +292,31 @@ export class RestaurantDetailComponent {
      * Create all reviews HTML and add them to the webpage.
      */
     fillReviewsHTML = () => {
-        const reviews = this.restaurant.reviews;
-        const container = document.getElementById('reviews-container');
+        const id = this.getParameterByName('id');
+        if (!id) { // no id found in URL
+            error = 'No restaurant id in URL'
+        } else {
+            this.reviewService.fetchReviewsByRestaurantId(id, (error, reviews) => {
 
-        let review = `
-            <h3>Reviews</h3>
-        `;
+                if (!reviews) {
+                    review += `<p>No reviews yet!'</p>`;
+                    container.innerHtml = review;
+                    return;
+                }
 
-        if (!reviews) {
-            review += `<p>No reviews yet!'</p>`;
-            container.innerHtml = review;
-            return;
+                const container = document.getElementById('reviews-container');
+
+                let review = `
+                <h3>Reviews</h3>
+            `;
+
+                const ul = document.getElementById('reviews-list');
+                reviews.forEach(review => {
+                    ul.insertAdjacentHTML('beforeend', this.createReviewHTML(review));
+                });
+                container.appendChild(ul);
+            });
         }
-
-        const ul = document.getElementById('reviews-list');
-        reviews.forEach(review => {
-            ul.insertAdjacentHTML('beforeend', this.createReviewHTML(review));
-        });
-        container.appendChild(ul);
     }
 
 
@@ -198,11 +325,18 @@ export class RestaurantDetailComponent {
      */
     createReviewHTML = (review) => {
         const starRating = `&#11088;`;
+        let rating = null;
+
+        if (typeof review.rating === 'string') {
+            rating = parseInt(review.rating, 10);
+        } else {
+            rating = review.rating;
+        }
         const li = `
             <li>
                 <p>${review.name}</p>
-                <p>${review.date}</p>
-                <p>Rating:${Array(review.rating).join(0).split(0).map((item, i) => `
+                <p>Last updated: ${review.updatedAt}</p>
+                <p>Rating:${Array(rating).join(0).split(0).map((item, i) => `
                 ${starRating}
             `).join('')}</p>
                 <p>${review.comments}</p>
