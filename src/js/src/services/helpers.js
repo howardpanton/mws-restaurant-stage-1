@@ -10,6 +10,12 @@ export class Helper {
         this.restaurantService = new RestaurantService();
         window.addEventListener('online', this.updateStatus);
         window.addEventListener('offline', this.updateStatus);
+        const condition = this.offLineStatus;
+        if (condition) {
+            const status = document.getElementById("status");
+            this.updateOfflineStatusHTML(condition, status);
+        }
+
     }
 
     /**
@@ -20,15 +26,29 @@ export class Helper {
         const status = document.getElementById("status");
         const condition = navigator.onLine ? "online" : "offline";
 
+        this.updateOfflineStatusHTML(condition, status);
+    }
+
+    updateOfflineStatusHTML(condition, status) {
         if (condition === "offline") {
             status.className = condition;
             status.insertAdjacentHTML("beforeend", "Status: Website " + condition);
             status.setAttribute("aria-live", "assertive");
+            this.offLineStatus = "offline";
         } else if (condition === "online") {
             status.className = '';
             status.innerHTML = '';
             status.removeAttribute("aria-live");
+            this.offLineStatus = "online";
         }
+    }
+
+    set offLineStatus(status) {
+        window.localStorage.setItem('status', status);
+    }
+
+    get offLineStatus() {
+        return window.localStorage.getItem('status');
     }
 
 
