@@ -16,13 +16,17 @@
       <link rel="dns-prefetch"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400"
         rel="stylesheet">
-      <link rel="stylesheet" href="css/styles.css">
       <link rel="manifest" href="/data/manifest.json">
       <link rel="apple-touch-icon" href="img/icons/icon-152x152.png">
     <title>Restaurant Info</title>
   </head>
   <body class="inside">
     <div id="status" role="alert"></div>
+    <div class="toaster" role="alert">
+      <div class="message">
+          <span class="close"></span>
+          Foo bar none.</div>
+    </div>
     <a class="skip-link" href="#map">Skip to map content</a>
     <a class="skip-link" href="#reviews-list">Skip to main content</a>
     <!-- Beginning header -->
@@ -90,15 +94,37 @@
       <!-- End map -->
       <!-- Beginning restaurant -->
       <section id="restaurant-container">
-        <!-- <h1 id="restaurant-name"></h1>
-        <img id="restaurant-img">
-        <p id="restaurant-cuisine"></p>
-        <p id="restaurant-address"></p> -->
-        <!-- <table id="restaurant-hours"></table> -->
       </section>
       <!-- end restaurant -->
       <!-- Beginning reviews -->
       <section id="reviews-container">
+        <div class="add-review">
+          <h2>Add Review</h2>
+          <form id="review">
+            <div class="field-set">
+              <label id="name">Your Name</label>
+              <input aria-labeledby="name" name="name"type="text">
+              <div class="form-errors name-error">Name field cannot be empty.</div>
+            </div>
+            <div class="field-set">
+                <select id="rating" name="rating" aria-labeledby="label">
+                    <option class="label" value="" selected>Choose rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <div class="form-errors rating-error">Rating field cannot be empty.</div>
+              </div>
+            <div class="field-set">
+              <label id=”comments”>Comments:</label>
+              <textarea name="comments" aria-labeledby="comments"></textarea>
+              <div class="form-errors comments-error">Comment field cannot be empty.</div>
+            </div>
+            <button class="submit-review">Add Review</button>
+        </form>
+        </div>
         <ul id="reviews-list"></ul>
       </section>
       <!-- End reviews -->
@@ -112,6 +138,7 @@
     <!-- End footer -->
 
     <!-- Beginning scripts -->
+    <link rel="stylesheet" href="css/styles.css">
     <script type="application/javascript" src="js/index.js"></script>
     <!-- Google Maps -->
     <script async defer
