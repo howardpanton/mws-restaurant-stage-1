@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr" class="no-js">
   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- Add to home screen for Safari on iOS -->
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -25,7 +25,7 @@
     <div class="toaster" role="alert">
       <div class="message">
           <span class="close"></span>
-          Foo bar none.</div>
+      </div>
     </div>
     <a class="skip-link" href="#map">Skip to map content</a>
     <a class="skip-link" href="#reviews-list">Skip to main content</a>
@@ -98,17 +98,17 @@
       <!-- end restaurant -->
       <!-- Beginning reviews -->
       <section id="reviews-container">
+        <h2>Add Review</h2>
         <div class="add-review">
-          <h2>Add Review</h2>
           <form id="review">
             <div class="field-set">
               <label id="name">Your Name</label>
-              <input aria-labeledby="name" name="name"type="text">
+              <input aria-labelledby="name" name="name"type="text">
               <div class="form-errors name-error">Name field cannot be empty.</div>
             </div>
             <div class="field-set">
-                <select id="rating" name="rating" aria-labeledby="label">
-                    <option class="label" value="" selected>Choose rating</option>
+              <label id="choose-rating" for="rating">Choose rating</label>
+                <select id="rating" name="rating" aria-labelledby="choose-rating">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -118,8 +118,8 @@
                 <div class="form-errors rating-error">Rating field cannot be empty.</div>
               </div>
             <div class="field-set">
-              <label id=”comments”>Comments:</label>
-              <textarea name="comments" aria-labeledby="comments"></textarea>
+              <label id="comments">Add your review:</label>
+              <textarea name="comments" aria-labelledby="comments"></textarea>
               <div class="form-errors comments-error">Comment field cannot be empty.</div>
             </div>
             <button class="submit-review">Add Review</button>
@@ -139,10 +139,10 @@
 
     <!-- Beginning scripts -->
     <link rel="stylesheet" href="css/styles.css">
-    <script type="application/javascript" src="js/index.js"></script>
+    <script type="application/javascript" src="js/restaurant.js"></script>
     <!-- Google Maps -->
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8QXYgmUMmzIPtJI-4fmXXUTo11fpx6Oc&libraries=places&callback=initMap"></script>
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrA5lO9P09f8cIYdGTsgdq-PkwuXHJxHY&libraries=places&callback=initMap"></script>
     <!-- End scripts -->
   </body>
 </html>

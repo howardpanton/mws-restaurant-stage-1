@@ -1,29 +1,31 @@
+import '@babel/polyfill';
 import {
     Helper
-} from '../services/helpers';
+} from './services/helpers';
 import {
     RestaurantService
-} from '../services/restaurant.service';
+} from './services/restaurant.service';
 import {
     MessageService
-} from '../services/message.service';
+} from './services/message.service';
 import {
     ReviewService
-} from '../services/review.service';
+} from './services/review.service';
 import {
     ServiceWorker
-} from '../services/serviceworker';
+} from './services/serviceworker';
 
 
 
 export class RestaurantDetailComponent {
     helper;
-    map;
+    newMap;
     restaurant;
     restaurantService;
     reviewService;
     messageService;
     serviceWorker;
+    reviews = [];
 
     constructor() {
         this.helper = new Helper();
@@ -33,6 +35,16 @@ export class RestaurantDetailComponent {
         this.reviewService = new ReviewService();
         this.messageService = new MessageService();
         this.serviceWorker = new ServiceWorker();
+
+        if (!navigator.onLine) {
+            const status = document.getElementById("status");
+            this.helper.updateOfflineStatusHTML('offline', status);
+        }
+
+        if (navigator.onLine) {
+            this.checkForOfflineData();
+            this.checkForStoredOfflineData();
+        }
 
         // Listen for widow resize event
         window.addEventListener(
@@ -50,19 +62,38 @@ export class RestaurantDetailComponent {
             passive: false
         });
 
+        window.addEventListener('online', this.updateOnlineStatus);
+        window.addEventListener('offline', this.updateOnlineStatus);
+
     };
+
+    checkForOfflineData() {
+        const offlineData = JSON.parse(window.localStorage.getItem('faves'));
+        if (offlineData) {
+            offlineData.forEach((data) => {
+                this.restaurantService.updateRestaurantFavourite(data.ID, data.is_fave);
+                this.faveRestaurant = [];
+                window.localStorage.removeItem('faves');
+            });
+        }
+    }
 
 
     // Load the elements need for the Home Page.
     load() {
         this.init();
         this.lazyLoadImagesFromServer();
-
     }
 
 
+    updateOnlineStatus = () => {
+        console.log('update online');
+        this.checkForStoredOfflineData();
+        this.checkForOfflineData();
+    }
+
     /**
-     * Initialize Google map, called from HTML.
+     * Initialize leaflet map
      */
     init = () => {
         window.initMap = () => {
@@ -92,6 +123,7 @@ export class RestaurantDetailComponent {
         window.addEventListener('online', this.checkForStoredOfflineData);
     }
 
+
     // Handle form
     formHandler = (event) => {
         event.preventDefault();
@@ -106,7 +138,8 @@ export class RestaurantDetailComponent {
             'restaurant_id': parseInt(ID, 10),
             'name': null,
             'rating': null,
-            'comments': null
+            'comments': null,
+            'createdAt': new Date
         };
 
         for (const entry of form) {
@@ -120,7 +153,13 @@ export class RestaurantDetailComponent {
             validatedFields['rating'] && validatedFields['comments']) {
             // Check if online
             // Store in SessionStorage
-            if (this.helper.offLineStatus === 'offline') { // true|false
+            // Add review to page
+            const ul = document.getElementById('reviews-list');
+            ul.insertAdjacentHTML('beforeend', this.createReviewHTML(validatedFields));
+
+            document.getElementById('review').reset();
+
+            if (!navigator.onLine) { // true|false
                 this.storeUntilOnline(validatedFields);
             } else {
                 this.postReviewToApi(validatedFields);
@@ -143,12 +182,6 @@ export class RestaurantDetailComponent {
 
 
     storeUntilOnline = (validatedFields) => {
-        let reviews = [];
-        const offlineData = window.localStorage.getItem('reviews');
-        if (offlineData) {
-            const data = JSON.parse(offlineData);
-            reviews = [data]
-        }
         reviews.push(validatedFields)
         window.localStorage.setItem('reviews', JSON.stringify(reviews));
         this.showToasterMessage('Thanks for the review, we will post to site as soon as you are back online');
@@ -156,7 +189,8 @@ export class RestaurantDetailComponent {
 
     showToasterMessage = (message) => {
         // Update the UI with a feedback message
-        window.localStorage.setItem('message', message);
+        // window.localStorage.setItem('message', message);
+        this.messageService.post(message);
     }
 
     changeEventHandler = (event) => {
@@ -246,6 +280,7 @@ export class RestaurantDetailComponent {
         <div></div>
       </div>
       <div class="info-grid">
+        <button class="fav_btn ${this.restaurant.is_favorite ? ` active` : ``} ">&hearts;</button>
         <p id="restaurant-cuisine">${this.restaurant.cuisine_type}</p>
       </div>
       <div class="details-grid">
@@ -262,6 +297,8 @@ export class RestaurantDetailComponent {
         }
         // fill reviews
         this.fillReviewsHTML();
+
+        this.addClickEventToBtn();
 
         window.setTimeout(() => {
             window.dispatchEvent(event);
@@ -337,7 +374,6 @@ export class RestaurantDetailComponent {
         const li = `
             <li>
                 <p>${review.name}</p>
-                <p>Last updated: ${review.updatedAt}</p>
                 <p>Rating:${Array(rating).join(0).split(0).map((item, i) => `
                 ${starRating}
             `).join('')}</p>
@@ -376,4 +412,46 @@ export class RestaurantDetailComponent {
             return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
+
+    addClickEventToBtn = () => {
+        const favBtns = document.getElementsByClassName('fav_btn');
+        Array.from(favBtns).forEach((btn) => {
+            btn.onclick = (event) => {
+                const ID = event.target.parentElement.dataset.id;
+                // toggle class
+                if (btn.classList.contains('active')) {
+                    // remove active
+                    btn.classList.remove('active');
+                    // remove from DB
+                    if (navigator.onLine) {
+                        this.restaurantService.updateRestaurantFavourite(ID, false);
+                    } else {
+                        this.faveRestaurant.push({
+                            ID: ID,
+                            is_fave: false,
+                        })
+                        window.localStorage.setItem('faves', (JSON.stringify(this.faveRestaurant)));
+                        // Add to Localstore until back online
+                    }
+                } else {
+                    btn.classList.add('active');
+                    // Add to DB
+
+                    if (navigator.onLine) {
+                        this.restaurantService.updateRestaurantFavourite(ID, true);
+                    } else {
+                        this.faveRestaurant.push({
+                            ID: ID,
+                            is_fave: true,
+                        })
+                        window.localStorage.setItem('faves', (JSON.stringify(this.faveRestaurant)));
+                        // Add to Localstore until back online
+                    }
+                }
+            }
+        })
+    }
 }
+
+const restaurantDetail = new RestaurantDetailComponent();
+restaurantDetail.load();

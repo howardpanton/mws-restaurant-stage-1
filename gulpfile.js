@@ -672,6 +672,7 @@ gulp.task("critical", () => {
                 base: "dist/",
                 inline: true,
                 css: ["dist/css/styles.css"],
+                extract: true,
                 timeout: 120000
             })
         )

@@ -131,9 +131,7 @@ export class ReviewService {
      */
     updateReview = (restaurantID) => {
         // fetch all reviews with proper error handling.
-
     }
-
 
     /**
      * Fetch a review by Restaurant name.

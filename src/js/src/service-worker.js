@@ -167,7 +167,9 @@ const respondToNormalRequest = (event, cacheRequest) => {
                             return new Response("Page not found");
                         }
                         // Put a copy of the response in the runtime cache.
-                        cache.put(cacheRequest, response.clone());
+                        if (cacheRequest.method === "GET") {
+                            cache.put(cacheRequest, response.clone());
+                        }
                         return response;
                     })
                     .catch(() => {

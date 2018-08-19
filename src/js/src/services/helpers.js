@@ -11,7 +11,7 @@ export class Helper {
         window.addEventListener('online', this.updateStatus);
         window.addEventListener('offline', this.updateStatus);
         const condition = this.offLineStatus;
-        if (condition) {
+        if (!navigator.onLine) {
             const status = document.getElementById("status");
             this.updateOfflineStatusHTML(condition, status);
         }
@@ -41,14 +41,6 @@ export class Helper {
             status.removeAttribute("aria-live");
             this.offLineStatus = "online";
         }
-    }
-
-    set offLineStatus(status) {
-        window.localStorage.setItem('status', status);
-    }
-
-    get offLineStatus() {
-        return window.localStorage.getItem('status');
     }
 
 

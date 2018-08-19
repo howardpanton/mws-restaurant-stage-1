@@ -104,28 +104,28 @@
       </section>
     </main>
     <link rel="stylesheet" href="css/styles.css">
-<script>
-/**
- * Initialize Google map, called from HTML.
- */
-    var map;
-      function initMap() {
-  let loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-    map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: loc,
-    scrollwheel: false
-  });
-
-}
-    </script>
-    <script type="application/javascript" src="js/index.js"></script>
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8QXYgmUMmzIPtJI-4fmXXUTo11fpx6Oc&libraries=places&callback=initMap"></script>
-    <footer id="footer" role="contentinfo">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrA5lO9P09f8cIYdGTsgdq-PkwuXHJxHY&libraries=places&callback=initMap"></script>
+      <script>
+        /**
+         * Initialize Google map, called from HTML.
+         */
+            var map;
+              function initMap() {
+          let loc = {
+            lat: 40.722216,
+            lng: -73.987501
+          };
+            map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: loc,
+            scrollwheel: false
+          });
+
+        }
+            </script>
+        <script type="application/javascript" src="js/index.js"></script>
+      <footer id="footer" role="contentinfo">
       Copyright (c) 2018 <a href="/"><strong>Restaurant Reviews</strong></a>
       All Rights Reserved.
     </footer>

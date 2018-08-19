@@ -1,44 +1,61 @@
 #maincontent .inside {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #maincontent {
     background-color: $porcelian;
     min-height: 100%;
-  }
+}
 
-  .content,
-  .filter-content {
-    width: 100%;
-    margin: 0 auto;
+.content,
+.filter-content {
     background: $porcelian;
     display: flex;
     flex-direction: column;
-  }
+    margin: 0 auto;
+    width: 100%;
+}
 
-  .filter-content {
-    flex-direction: row;
+.filter-content {
     background-color: $pickled-bluewood;
-  }
+    flex-direction: row;
+}
 
-  .content {
+.content {
     max-width: 960px;
-  }
+}
 
-  #footer {
-    background-color:  darken($pickled-bluewood, 10%);;
+#footer {
+    background-color: darken($pickled-bluewood, 10%);
     color: $porcelian;
     font-size: 8pt;
     letter-spacing: 1px;
     padding: 25px;
     text-align: center;
     text-transform: uppercase;
-  }
+    ;
+}
 
-  /* ====================== Map ====================== */
-  #map {
+/* ====================== Map ====================== */
+
+#map {
+    background-color: #ccc;
     height: 400px;
     width: 100%;
-    background-color: #ccc;
-  }
+}
+
+.fav_btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 36px;
+    outline: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 48px;
+    &.active {
+        color: #fe6657;
+    }
+}

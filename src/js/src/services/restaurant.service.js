@@ -175,13 +175,50 @@ export class RestaurantService {
      * Map marker for a restaurant.
      */
     mapMarkerForRestaurant(restaurant, map) {
-        const marker = new google.maps.Marker({
-            position: restaurant.latlng,
-            title: restaurant.name,
-            url: this.urlForRestaurant(restaurant),
-            map: map,
-            animation: google.maps.Animation.DROP
-        });
-        return marker;
+        if (google) {
+            const marker = new google.maps.Marker({
+                position: restaurant.latlng,
+                title: restaurant.name,
+                url: this.urlForRestaurant(restaurant),
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+            return marker;
+        }
+    }
+
+    /**
+     * Fetch a review by Restaurant name.
+     */
+    updateRestaurantFavourite = (restaurantID, isFave) => {
+        // fetch all reviews with proper error handling.
+        return fetch(`http://localhost:1337/restaurants/${restaurantID}/?is_favorite=${isFave}`, {
+                method: "PUT",
+                mode: "cors",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(response => {
+                // const restaurant = response;
+                this.idbService.init()
+                    .then(db => {
+                        console.log(db, 'db');
+                        if (db) {
+                            const tx = db.transaction("restaurants", 'readwrite');
+                            const restaurantStore = tx.objectStore("restaurants");
+                            restaurantStore.get(parseInt(restaurantID, 10))
+                                .then(restaurant => {
+                                    console.log(restaurant, 'rest');
+                                    restaurant.is_favorite = isFave;
+                                    restaurantStore.put(restaurant);
+                                })
+
+                        }
+                    })
+            }) // parses response to JSON
+            .catch(error => console.error(`Fetch Error =\n`, error));
+
     }
 }
