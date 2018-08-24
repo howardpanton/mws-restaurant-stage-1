@@ -59,3 +59,9 @@
         color: #fe6657;
     }
 }
+
+.mobile-s #map-container,
+.mobile-m #map-container,
+.mobile-l #map-container {
+    display: none;
+}

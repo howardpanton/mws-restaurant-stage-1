@@ -19,10 +19,11 @@ export class RestaurantService {
      */
     fetchRestaurants(id, callback) {
 
-        let url = id ?
-            `${this.DATABASE_URL}/restaurants/${id}` :
-            `${this.DATABASE_URL}/restaurants`;
+        // let url = id ?
+        //     `${this.DATABASE_URL}/restaurants/${id}` :
+        //     `${this.DATABASE_URL}/restaurants`;
 
+        let url = `${this.DATABASE_URL}/restaurants`;
         const request = new Request(url, {
             method: "GET",
             headers: new Headers({

@@ -20,7 +20,7 @@ export class ReviewService {
     fetchReviews = (id, callback) => {
 
         let url =
-            `${this.DATABASE_URL}/reviews/?restaurant_id=${id}`;
+            `${this.DATABASE_URL}/reviews/`;
 
         const request = new Request(url, {
             method: "GET",

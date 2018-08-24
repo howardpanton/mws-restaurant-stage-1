@@ -89,8 +89,7 @@ const urlsToCache = [
 ];
 
 // ToDO: Install ServiceWorker
-const CACHE_VERSION = "v30:restaurant-app";
-const RUNTIME = "runtime";
+const CACHE_VERSION = "v31:restaurant-app";
 
 // Install the service worker and cache files
 // ToDo add caching for Google map
@@ -112,7 +111,7 @@ self.addEventListener("install", event => {
 
 self.addEventListener("activate", event => {
     console.log("Service Worker: activate");
-    const currentCaches = [CACHE_VERSION, RUNTIME];
+    const currentCaches = [CACHE_VERSION];
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -134,7 +133,6 @@ self.addEventListener("fetch", event => {
     let cacheRequest = event.request;
     let cacheUrl = new URL(event.request.url);
 
-    // console.log(cacheUrl, "url");
 
     // Check to see if the request is for restaurants.html?id=foo
     if (event.request.url.indexOf("restaurant.html") > -1) {
@@ -160,7 +158,7 @@ const respondToNormalRequest = (event, cacheRequest) => {
             if (cachedResponse) {
                 return cachedResponse;
             }
-            return caches.open(RUNTIME).then(cache => {
+            return caches.open(CACHE_VERSION).then(cache => {
                 return fetch(cacheRequest)
                     .then(response => {
                         if (response.status == 404) {
